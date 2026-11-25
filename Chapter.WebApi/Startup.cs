@@ -12,6 +12,10 @@ namespace Chapter.WebApi
 {
     public class Startup
     {
+        // Chave com no minimo 32 bytes (256 bits), exigida pelo HS256 nas versoes atuais do IdentityModel.
+        // (A chave original "chapter-chave-autenticacao" tem apenas 26 bytes e gerava erro 500 no login.)
+        public const string ChaveJwt = "chapter-chave-autenticacao-com-no-minimo-32-bytes";
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -36,7 +40,7 @@ namespace Chapter.WebApi
                        ValidateIssuer = true,
                        ValidateAudience = true,
                        ValidateLifetime = true,
-                       IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("chapter-chave-autenticacao")),
+                       IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(ChaveJwt)),
                        ClockSkew = TimeSpan.FromMinutes(30),
                        ValidIssuer = "chapter.webapi",
                        ValidAudience = "chapter.webapi"
