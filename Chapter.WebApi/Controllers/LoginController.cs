@@ -36,7 +36,7 @@ namespace Chapter.WebApi.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, usuarioBuscado.Id.ToString()),
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("chapter-chave-autenticacao"));
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Startup.ChaveJwt));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
