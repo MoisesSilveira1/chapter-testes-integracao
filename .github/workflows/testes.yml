@@ -1,0 +1,26 @@
+name: Testes de integracao
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Testes de integracao (xUnit + WebApplicationFactory)
+        run: dotnet test Chapter.IntegrationTests --logger "console;verbosity=normal" --logger "trx;LogFileName=integracao.trx" --results-directory TestResults
+
+      - name: Publicar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultados-testes
+          path: TestResults/*.trx
